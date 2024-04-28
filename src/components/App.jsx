@@ -55,6 +55,26 @@ const App = () => {
   }, []);
 
   useEffect(() => {
+    const fetchData = async () => {
+      if (query) {
+        setLoading(true);
+        setPage(1);
+
+        try {
+          const response = await axios.get(`https://pixabay.com/api/?q=${query}&page=1&key=${key}&image_type=photo&orientation=horizontal&per_page=12`);
+          setImages(response.data.hits);
+        } catch (error) {
+          console.error('Error fetching images: ', error);
+        }
+
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [query, key]);
+
+  useEffect(() => {
     const handleKeyPress = (e) => {
       if (e.key === 'Escape') {
         closeModal();
@@ -80,3 +100,4 @@ const App = () => {
 };
 
 export default App;
+
